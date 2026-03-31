@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Start Your Free Trial — Local Knowledge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            padding: 24px 0;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        
+        .checkout-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 32px;
+        }
+        
+        .plan-summary {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .plan-name {
+            font-weight: 600;
+            font-size: 18px;
+        }
+        
+        .plan-price {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .plan-price span {
+            font-size: 14px;
+            font-weight: 400;
+            color: #888;
+        }
+        
+        .plan-features {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .plan-features li {
+            padding: 8px 0;
+            padding-left: 28px;
+            position: relative;
+            color: #555;
+        }
+        
+        .plan-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00aa44;
+            font-weight: 700;
+        }
+        
+        .trial-badge {
+            background: #e8f4fd;
+            color: #0066ff;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        input[type="email"],
+        input[type="password"],
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+        
+        .species-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .species-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .species-option:hover {
+            border-color: #0066ff;
+        }
+        
+        .species-option.selected {
+            border-color: #0066ff;
+            background: #f0f7ff;
+        }
+        
+        .species-option input {
+            display: none;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 8px;
+        }
+        
+        .btn-primary:hover {
+            background: #0052cc;
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .btn-stripe {
+            background: #635bff;
+        }
+        
+        .btn-stripe:hover {
+            background: #5249d7;
+        }
+        
+        .security-note {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #888;
+        }
+        
+        .divider {
+            text-align: center;
+            margin: 24px 0;
+            position: relative;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e5e5e5;
+        }
+        
+        .divider span {
+            background: white;
+            padding: 0 16px;
+            position: relative;
+            color: #888;
+            font-size: 14px;
+        }
+        
+        .signin-link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .signin-link a {
+            color: #0066ff;
+            text-decoration: none;
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .alert-error {
+            background: #fee;
+            color: #c00;
+        }
+        
+        .alert-success {
+            background: #e6f7ed;
+            color: #00aa44;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            color: #888;
+            font-size: 13px;
+        }
+        
+        footer a {
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">Local Knowledge</div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="checkout-card">
+                <h1>Start your free trial</h1>
+                <p class="subtitle">30 days free, then $5/month. Cancel anytime.</p>
+
+                <div class="plan-summary">
+                    <div class="plan-header">
+                        <span class="plan-name">Local Knowledge</span>
+                        <span class="plan-price">$5<span>/month</span></span>
+                    </div>
+                    <ul class="plan-features">
+                        <li>Daily 3-day fishing forecasts</li>
+                        <li>Customized to your zip code</li>
+                        <li>Species-specific intel</li>
+                        <li>Captain's Call recommendations</li>
+                        <li>4-star day SMS alerts</li>
+                    </ul>
+                </div>
+
+                <div class="trial-badge">
+                    🎣 Your first 30 days are completely free
+                </div>
+
+                <div id="alert" class="alert hidden"></div>
+
+                <!-- Step 1: Account Creation -->
+                <form id="account-form">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="you@example.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" placeholder="Min 6 characters" minlength="6" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary" id="btn-account">
+                        Continue
+                    </button>
+                </form>
+
+                <!-- Step 2: Profile Setup (hidden initially) -->
+                <form id="profile-form" class="hidden">
+                    <div class="form-group">
+                        <label for="zip">Zip Code</label>
+                        <input type="text" id="zip" placeholder="33711" pattern="[0-9]{5}" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Target Species (select all you fish for)</label>
+                        <div class="species-grid">
+                            <label class="species-option">
+                                <input type="checkbox" value="tarpon">
+                                <span>🎣 Tarpon</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="snook">
+                                <span>🐟 Snook</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="redfish">
+                                <span>🔴 Redfish</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="trout">
+                                <span>🐠 Trout</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="flounder">
+                                <span>🦈 Flounder</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="grouper">
+                                <span>⚓ Grouper</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="snapper">
+                                <span>🎯 Snapper</span>
+                            </label>
+                            <label class="species-option">
+                                <input type="checkbox" value="kingfish">
+                                <span>👑 Kingfish</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary btn-stripe" id="btn-checkout">
+                        Start Free Trial
+                    </button>
+                </form>
+
+                <div class="security-note">
+                    <span>🔒</span>
+                    <span>Secure checkout powered by Stripe</span>
+                </div>
+
+                <div class="signin-link">
+                    Already have an account? <a href="/dashboard.html">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Local Knowledge · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></p>
+        </div>
+    </footer>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize clients
+        const supabaseUrl = 'YOUR_SUPABASE_URL';
+        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+        
+        const stripe = Stripe('YOUR_STRIPE_PUBLISHABLE_KEY');
+        
+        let currentUser = null;
+
+        // Species selection
+        document.querySelectorAll('.species-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const checkbox = option.querySelector('input');
+                checkbox.checked = !checkbox.checked;
+                option.classList.toggle('selected', checkbox.checked);
+            });
+        });
+
+        // Step 1: Create account
+        document.getElementById('account-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('btn-account');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>Creating account...';
+
+            try {
+                const { data, error } = await supabase.auth.signUp({
+                    email,
+                    password
+                });
+
+                if (error) throw error;
+
+                currentUser = data.user;
+                
+                // Show profile form
+                document.getElementById('account-form').classList.add('hidden');
+                document.getElementById('profile-form').classList.remove('hidden');
+                
+                showAlert('Account created! Now tell us where you fish.', 'success');
+
+            } catch (error) {
+                showAlert(error.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Continue';
+            }
+        });
+
+        // Step 2: Complete profile and start trial
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const zip = document.getElementById('zip').value;
+            const species = Array.from(document.querySelectorAll('.species-option input:checked'))
+                .map(cb => cb.value);
+            const btn = document.getElementById('btn-checkout');
+            
+            if (species.length === 0) {
+                showAlert('Please select at least one species', 'error');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span>Setting up your trial...';
+
+            try {
+                // Call onboarding function
+                const { data, error } = await supabase.functions.invoke('onboarding-complete', {
+                    body: {
+                        zip_code: zip,
+                        species: species,
+                        radius_miles: 50
+                    }
+                });
+
+                if (error) throw error;
+
+                // Create Stripe checkout session for trial
+                const response = await fetch('/api/create-checkout-session', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: currentUser.id,
+                        email: currentUser.email
+                    })
+                });
+
+                const session = await response.json();
+
+                // Redirect to Stripe Checkout
+                const result = await stripe.redirectToCheckout({
+                    sessionId: session.id
+                });
+
+                if (result.error) {
+                    throw result.error;
+                }
+
+            } catch (error) {
+                showAlert(error.message, 'error');
+                btn.disabled = false;
+                btn.textContent = 'Start Free Trial';
+            }
+        });
+
+        function showAlert(message, type) {
+            const alert = document.getElementById('alert');
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.classList.remove('hidden');
+        }
+
+        // Check if already logged in
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                // Already has account, redirect to dashboard
+                window.location.href = '/dashboard.html';
+            }
+        }
+
+        checkAuth();
+    </script>
+</body>
+</html>
