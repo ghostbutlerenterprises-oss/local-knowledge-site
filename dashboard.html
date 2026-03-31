@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Local Knowledge</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+        
+        header {
+            background: #1a1a1a;
+            color: white;
+            padding: 16px 0;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            color: white;
+        }
+        
+        .user-email {
+            font-size: 14px;
+            color: #888;
+        }
+        
+        .btn-logout {
+            background: transparent;
+            border: 1px solid #444;
+            color: #888;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        
+        .btn-logout:hover {
+            border-color: #666;
+            color: white;
+        }
+        
+        main {
+            padding: 40px 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+        
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .status-trialing {
+            background: #e8f4fd;
+            color: #0066ff;
+        }
+        
+        .status-active {
+            background: #e6f7ed;
+            color: #00aa44;
+        }
+        
+        .status-cancelled {
+            background: #fee;
+            color: #c00;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        input[type="text"],
+        input[type="tel"],
+        select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #0066ff;
+        }
+        
+        .species-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+        }
+        
+        .species-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border: 2px solid #e5e5e5;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .species-option:hover {
+            border-color: #0066ff;
+        }
+        
+        .species-option.selected {
+            border-color: #0066ff;
+            background: #f0f7ff;
+        }
+        
+        .species-option input {
+            display: none;
+        }
+        
+        .btn-primary {
+            background: #0066ff;
+            color: white;
+            border: none;
+            padding: 14px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary:hover {
+            background: #0052cc;
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .spots-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .spot-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        .spot-name {
+            font-weight: 600;
+        }
+        
+        .spot-type {
+            font-size: 13px;
+            color: #888;
+        }
+        
+        .primary-badge {
+            background: #0066ff;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 24px;
+        }
+        
+        .alert-success {
+            background: #e6f7ed;
+            color: #00aa44;
+        }
+        
+        .alert-error {
+            background: #fee;
+            color: #c00;
+        }
+        
+        .subscription-info {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        
+        .info-label {
+            color: #666;
+        }
+        
+        .info-value {
+            font-weight: 600;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        #login-view {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 48px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .login-card h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .login-card p {
+            color: #666;
+            margin-bottom: 32px;
+        }
+        
+        .login-card input {
+            margin-bottom: 16px;
+        }
+        
+        .login-card .btn-primary {
+            width: 100%;
+        }
+        
+        .toggle-mode {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .toggle-mode a {
+            color: #0066ff;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 600px) {
+            .card {
+                padding: 24px;
+            }
+            
+            .species-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                gap: 16px;
+            }
+            
+            .nav-links a:not(.active) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login View -->
+    <div id="login-view">
+        <div class="login-card">
+            <h1>Local Knowledge</h1>
+            <p id="login-subtitle">Sign in to manage your forecasts</p>
+            
+            <div id="alert-login" class="alert hidden"></div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn-primary">Sign In</button>
+            </form>
+            
+            <form id="signup-form" class="hidden">
+                <div class="form-group">
+                    <input type="email" id="signup-email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signup-password" placeholder="Password (min 6 chars)" required minlength="6">
+                </div>
+                <button type="submit" class="btn-primary">Create Account</button>
+            </form>
+            
+            <div class="toggle-mode">
+                <span id="toggle-text">Don't have an account? <a id="toggle-link">Sign up</a></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard View -->
+    <div id="dashboard-view" class="hidden">
+        <header>
+            <div class="container">
+                <div class="header-content">
+                    <div class="logo">Local Knowledge</div>
+                    <div class="nav-links">
+                        <a href="#" class="active">Dashboard</a>
+                        <a href="#forecast">Today's Forecast</a>
+                        <span class="user-email" id="user-email"></span>
+                        <button class="btn-logout" onclick="logout()">Logout</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="container">
+                <div id="alert-dashboard" class="alert hidden"></div>
+
+                <!-- Subscription Status -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Subscription</h2>
+                        <span id="sub-status" class="status-badge">Loading...</span>
+                    </div>
+                    <div class="subscription-info">
+                        <div class="info-row">
+                            <span class="info-label">Plan</span>
+                            <span class="info-value">$5/month</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Status</span>
+                            <span class="info-value" id="sub-status-text">-</span>
+                        </div>
+                        <div class="info-row">
+                            <span class="info-label">Current period ends</span>
+                            <span class="info-value" id="sub-renews">-</span>
+                        </div>
+                        <div class="info-row" id="trial-row">
+                            <span class="info-label">Trial ends</span>
+                            <span class="info-value" id="trial-ends">-</span>
+                        </div>
+                    </div>
+                    <div style="margin-top: 24px;">
+                        <button id="manage-billing" class="btn-primary" style="display: none;" onclick="manageBilling()">
+                            Manage Billing
+                        </button>
+                        <button id="start-trial" class="btn-primary" onclick="startTrial()">
+                            Start Free Trial
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Profile Settings -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Your Profile</h2>
+                    </div>
+                    <form id="profile-form">
+                        <div class="form-group">
+                            <label for="profile-zip">Zip Code</label>
+                            <input type="text" id="profile-zip" placeholder="33711" pattern="[0-9]{5}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile-radius">Search Radius (miles)</label>
+                            <select id="profile-radius">
+                                <option value="25">25 miles</option>
+                                <option value="50" selected>50 miles</option>
+                                <option value="100">100 miles</option>
+                                <option value="200">200 miles</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile-phone">Phone (for SMS alerts)</label>
+                            <input type="tel" id="profile-phone" placeholder="+1 (555) 123-4567">
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">Save Profile</button>
+                    </form>
+                </div>
+
+                <!-- Species Preferences -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Target Species</h2>
+                    </div>
+                    <p style="color: #666; margin-bottom: 16px;">Select the species you want forecasts for:</p>
+                    <div class="species-grid" id="species-grid">
+                        <label class="species-option">
+                            <input type="checkbox" value="tarpon">
+                            <span>🎣 Tarpon</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="snook">
+                            <span>🐟 Snook</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="redfish">
+                            <span>🔴 Redfish</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="trout">
+                            <span>🐠 Trout</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="flounder">
+                            <span>🦈 Flounder</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="grouper">
+                            <span>⚓ Grouper</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="snapper">
+                            <span>🎯 Snapper</span>
+                        </label>
+                        <label class="species-option">
+                            <input type="checkbox" value="kingfish">
+                            <span>👑 Kingfish</span>
+                        </label>
+                    </div>
+                    <button onclick="saveSpecies()" class="btn-primary" style="margin-top: 24px;">Save Species</button>
+                </div>
+
+                <!-- Your Spots -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Your Fishing Spots</h2>
+                    </div>
+                    <p style="color: #666; margin-bottom: 16px;">Based on your zip code, these are your assigned spots:</p>
+                    <div class="spots-list" id="spots-list">
+                        <p style="color: #888;">Update your zip code to see your spots</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Initialize Supabase client
+        const supabaseUrl = 'YOUR_SUPABASE_URL';
+        const supabaseKey = 'YOUR_SUPABASE_ANON_KEY';
+        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+        let currentUser = null;
+        let userProfile = null;
+        let userSubscription = null;
+
+        // Auth state listener
+        supabase.auth.onAuthStateChange((event, session) => {
+            if (session) {
+                currentUser = session.user;
+                showDashboard();
+            } else {
+                currentUser = null;
+                showLogin();
+            }
+        });
+
+        // Check initial auth state
+        async function checkAuth() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                currentUser = session.user;
+                await loadDashboard();
+                showDashboard();
+            } else {
+                showLogin();
+            }
+        }
+
+        function showLogin() {
+            document.getElementById('login-view').classList.remove('hidden');
+            document.getElementById('dashboard-view').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('login-view').classList.add('hidden');
+            document.getElementById('dashboard-view').classList.remove('hidden');
+            loadDashboard();
+        }
+
+        async function loadDashboard() {
+            if (!currentUser) return;
+
+            document.getElementById('user-email').textContent = currentUser.email;
+
+            // Load profile
+            const { data: profile, error: profileError } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', currentUser.id)
+                .single();
+
+            if (profile) {
+                userProfile = profile;
+                document.getElementById('profile-zip').value = profile.zip_code || '';
+                document.getElementById('profile-radius').value = profile.radius_miles || 50;
+                document.getElementById('profile-phone').value = profile.phone || '';
+                
+                if (profile.zip_code) {
+                    loadSpots(profile.zip_code);
+                }
+            }
+
+            // Load subscription
+            const { data: subscription, error: subError } = await supabase
+                .from('subscriptions')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .single();
+
+            if (subscription) {
+                userSubscription = subscription;
+                updateSubscriptionUI(subscription);
+            }
+
+            // Load species
+            const { data: species } = await supabase
+                .from('user_species')
+                .select('species')
+                .eq('user_id', currentUser.id);
+
+            if (species) {
+                species.forEach(s => {
+                    const checkbox = document.querySelector(`input[value="${s.species}"]`);
+                    if (checkbox) {
+                        checkbox.checked = true;
+                        checkbox.parentElement.classList.add('selected');
+                    }
+                });
+            }
+        }
+
+        function updateSubscriptionUI(sub) {
+            const statusBadge = document.getElementById('sub-status');
+            const statusText = document.getElementById('sub-status-text');
+            const renewsDate = document.getElementById('sub-renews');
+            const trialRow = document.getElementById('trial-row');
+            const trialEnds = document.getElementById('trial-ends');
+            const manageBtn = document.getElementById('manage-billing');
+            const startBtn = document.getElementById('start-trial');
+
+            statusBadge.className = 'status-badge status-' + sub.status;
+            statusBadge.textContent = sub.status.charAt(0).toUpperCase() + sub.status.slice(1);
+            statusText.textContent = sub.status.charAt(0).toUpperCase() + sub.status.slice(1);
+
+            if (sub.current_period_end) {
+                renewsDate.textContent = new Date(sub.current_period_end).toLocaleDateString();
+            }
+
+            if (sub.status === 'trialing' && sub.trial_ends_at) {
+                trialRow.style.display = 'flex';
+                trialEnds.textContent = new Date(sub.trial_ends_at).toLocaleDateString();
+                manageBtn.style.display = 'none';
+                startBtn.style.display = 'none';
+            } else if (sub.status === 'active') {
+                trialRow.style.display = 'none';
+                manageBtn.style.display = 'inline-block';
+                startBtn.style.display = 'none';
+            } else {
+                trialRow.style.display = 'none';
+                manageBtn.style.display = 'none';
+                startBtn.style.display = 'inline-block';
+            }
+        }
+
+        async function loadSpots(zipCode) {
+            const { data: spots } = await supabase
+                .from('user_spots')
+                .select(`
+                    is_primary,
+                    spots:spot_id (name, type)
+                `)
+                .eq('user_id', currentUser.id);
+
+            const spotsList = document.getElementById('spots-list');
+            
+            if (spots && spots.length > 0) {
+                spotsList.innerHTML = spots.map(s => `
+                    <div class="spot-item">
+                        <div>
+                            <div class="spot-name">${s.spots.name}</div>
+                            <div class="spot-type">${s.spots.type}</div>
+                        </div>
+                        ${s.is_primary ? '<span class="primary-badge">Primary</span>' : ''}
+                    </div>
+                `).join('');
+            } else {
+                spotsList.innerHTML = '<p style="color: #888;">No spots assigned yet. Save your profile to assign spots.</p>';
+            }
+        }
+
+        // Login form
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
+            if (error) {
+                showAlert('login', error.message, 'error');
+            }
+        });
+
+        // Signup form
+        document.getElementById('signup-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            const { data, error } = await supabase.auth.signUp({ email, password });
+
+            if (error) {
+                showAlert('login', error.message, 'error');
+            } else {
+                showAlert('login', 'Account created! Check your email to confirm.', 'success');
+            }
+        });
+
+        // Toggle login/signup
+        let isLoginMode = true;
+        document.getElementById('toggle-link').addEventListener('click', () => {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                document.getElementById('login-form').classList.remove('hidden');
+                document.getElementById('signup-form').classList.add('hidden');
+                document.getElementById('toggle-text').innerHTML = 'Don\'t have an account? <a id="toggle-link">Sign up</a>';
+                document.getElementById('login-subtitle').textContent = 'Sign in to manage your forecasts';
+            } else {
+                document.getElementById('login-form').classList.add('hidden');
+                document.getElementById('signup-form').classList.remove('hidden');
+                document.getElementById('toggle-text').innerHTML = 'Already have an account? <a id="toggle-link">Sign in</a>';
+                document.getElementById('login-subtitle').textContent = 'Create your account';
+            }
+            // Re-attach listener
+            document.getElementById('toggle-link').addEventListener('click', arguments.callee);
+        });
+
+        // Profile form
+        document.getElementById('profile-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const zip = document.getElementById('profile-zip').value;
+            const radius = parseInt(document.getElementById('profile-radius').value);
+            const phone = document.getElementById('profile-phone').value;
+
+            // Call onboarding function
+            const { data, error } = await supabase.functions.invoke('onboarding-complete', {
+                body: { zip_code: zip, radius_miles: radius, phone, species: getSelectedSpecies() }
+            });
+
+            if (error) {
+                showAlert('dashboard', error.message, 'error');
+            } else {
+                showAlert('dashboard', 'Profile saved! Your spots have been assigned.', 'success');
+                loadSpots(zip);
+            }
+        });
+
+        // Species selection
+        document.querySelectorAll('.species-option').forEach(option => {
+            option.addEventListener('click', () => {
+                const checkbox = option.querySelector('input');
+                checkbox.checked = !checkbox.checked;
+                option.classList.toggle('selected', checkbox.checked);
+            });
+        });
+
+        function getSelectedSpecies() {
+            return Array.from(document.querySelectorAll('.species-option input:checked'))
+                .map(cb => cb.value);
+        }
+
+        async function saveSpecies() {
+            const species = getSelectedSpecies();
+            
+            const { error } = await supabase.functions.invoke('onboarding-complete', {
+                body: { 
+                    zip_code: document.getElementById('profile-zip').value || userProfile?.zip_code,
+                    radius_miles: parseInt(document.getElementById('profile-radius').value),
+                    phone: document.getElementById('profile-phone').value,
+                    species
+                }
+            });
+
+            if (error) {
+                showAlert('dashboard', error.message, 'error');
+            } else {
+                showAlert('dashboard', 'Species preferences saved!', 'success');
+            }
+        }
+
+        async function logout() {
+            await supabase.auth.signOut();
+        }
+
+        function manageBilling() {
+            // Redirect to Stripe customer portal
+            window.open('https://billing.stripe.com/p/login/test', '_blank');
+        }
+
+        function startTrial() {
+            // Redirect to Stripe checkout
+            window.open('https://checkout.stripe.com/pay/test', '_blank');
+        }
+
+        function showAlert(view, message, type) {
+            const alert = document.getElementById(`alert-${view}`);
+            alert.textContent = message;
+            alert.className = `alert alert-${type}`;
+            alert.classList.remove('hidden');
+            setTimeout(() => alert.classList.add('hidden'), 5000);
+        }
+
+        // Initialize
+        checkAuth();
+    </script>
+</body>
+</html>
